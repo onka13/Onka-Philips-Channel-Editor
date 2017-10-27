@@ -14,7 +14,8 @@ When you export channels from tv to usb disk, you'll have files below;
   - syslogo.tar
 
 ### 1.0 First Version
-* Tested Philips PUS6262 
+* Tested Philips PUS6262
+* Download [First Version] (https://github.com/onka13/Onka-Philips-Channel-Editor/raw/master/Program.zip)
 
 ### Usage
 1. Firstly, File->Open
