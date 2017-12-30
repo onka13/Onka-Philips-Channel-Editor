@@ -185,7 +185,7 @@ namespace OnkaPhilipsChannelEditor
                 _niceChannelName = OnkaHelper.GetChannelName(channelNameField).ToLowerInvariant();
             }
         }
-        //[System.Xml.Serialization.XmlIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public string _niceChannelName = "";
         
         /// <remarks/>
