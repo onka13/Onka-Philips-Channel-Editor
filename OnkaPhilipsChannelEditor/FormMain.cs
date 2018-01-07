@@ -53,6 +53,8 @@ namespace OnkaPhilipsChannelEditor
             listBox1.DataSource = root.Channel;
             splitContainer1.Enabled = true;
             cStatus.Text = openFileDialog.FileName;
+
+            Log("Opened from " + openFileDialog.FileName);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,22 +76,27 @@ namespace OnkaPhilipsChannelEditor
         {
             if (listBox1.SelectedIndex == -1) return;
             var channel = listBox1.SelectedItem as ChannelMapChannel;
+
+            Log(channel.Setup._niceChannelName + " changed");
+
             channel.Setup.ChannelNumber = Convert.ToUInt16(txtNo.Text);
             channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
             channel.Setup.ChannelName = OnkaHelper.SetChannelName(txtName.Text);
+
+            ReBindList(listBox1.SelectedIndex, channel);
+
+            if (cAutoSort.Checked) SortByNo();
         }
 
         private void sortByNoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            root.Channel = root.Channel.OrderBy(x => x.Setup.ChannelNumber).ToArray();
-            listBox1.DataSource = null;
-            listBox1.DataSource = root.Channel;
+            SortByNo();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            if (dialog.ShowDialog() !=  DialogResult.OK)
+            if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
@@ -116,7 +123,7 @@ namespace OnkaPhilipsChannelEditor
                 }
                 File.WriteAllText(dialog.FileName, output);
             }
-            MessageBox.Show("Saved");
+            Log("Saved to " + dialog.FileName);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -131,8 +138,9 @@ namespace OnkaPhilipsChannelEditor
             {
                 root.Channel[i].Setup.ChannelNumber = Convert.ToUInt16(i + 1);
             }
-            listBox1.DataSource = null;
-            listBox1.DataSource = root.Channel;
+            ReBindList();
+
+            Log("Order All - Re Number");
         }
 
         private void listBox1_MouseDown(object sender, MouseEventArgs e)
@@ -152,15 +160,14 @@ namespace OnkaPhilipsChannelEditor
             Point point = listBox1.PointToClient(new Point(e.X, e.Y));
             int index = listBox1.IndexFromPoint(point);
             if (index < 0) index = listBox1.Items.Count - 1;
-            ChannelMapChannel data =(ChannelMapChannel)e.Data.GetData(typeof(ChannelMapChannel));
+            ChannelMapChannel data = (ChannelMapChannel)e.Data.GetData(typeof(ChannelMapChannel));
             data.Setup.ChannelNumber = Convert.ToUInt16(index + 1);
             var channels = root.Channel.ToList();
             channels.Remove(data);
             channels.Insert(index, data);
             root.Channel = channels.ToArray();
-            listBox1.DataSource = null;
-            listBox1.DataSource = root.Channel;
-            listBox1.SelectedIndex = index;
+
+            ReBindList(index);
         }
 
         private void favoriteFirst255ChannelToolStripMenuItem_Click(object sender, EventArgs e)
@@ -168,7 +175,7 @@ namespace OnkaPhilipsChannelEditor
             var index = listBox1.SelectedIndex;
             for (int i = 0; i < root.Channel.Length; i++)
             {
-                if (i<254)
+                if (i < 254)
                 {
                     root.Channel[i].Setup.FavoriteNumber = Convert.ToByte(i + 1);
                 }
@@ -176,11 +183,8 @@ namespace OnkaPhilipsChannelEditor
                 {
                     root.Channel[i].Setup.FavoriteNumber = 0;
                 }
-                
             }
-            listBox1.DataSource = null;
-            listBox1.DataSource = root.Channel;
-            listBox1.SelectedIndex = index;
+            ReBindList(index);
             MessageBox.Show("Ok");
         }
 
@@ -213,17 +217,95 @@ namespace OnkaPhilipsChannelEditor
                         }
                     }
                 }
-                MessageBox.Show("Completed");
+                Log("Order by saved file list " + openFileDialog.FileName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                Log("Error: " + ex.Message);
             }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormAboutBox().ShowDialog();
+        }
+
+        private void btnDeleteChannel_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            var index = listBox1.SelectedIndex;
+            var name = root.Channel[index].Setup._niceChannelName;
+
+            var list = root.Channel.ToList();
+            list.RemoveAt(index);
+            root.Channel = list.ToArray();
+
+            ReBindList(index - 1);
+
+            Log(name + " deleted");
+        }
+
+        void SortByNo()
+        {
+            root.Channel = root.Channel.OrderBy(x => x.Setup.ChannelNumber).ToArray();
+            ReBindList(listBox1.SelectedIndex, listBox1.SelectedItem);
+            Log("Sorted by no");
+        }
+
+        void ReBindList(int index = 0, object item = null)
+        {
+            listBox1.DataSource = null;
+            listBox1.DataSource = root.Channel;
+
+            if (item != null) listBox1.SelectedItem = item;
+            else if (index > 0) listBox1.SelectedIndex = index;
+        }
+
+        void Log(string msg)
+        {
+            txtLog.Text = txtLog.Text.Insert(0, DateTime.Now.ToString("HH:mm:ss") + ":" + msg + "\n");
+            txtLog.SelectionStart = 0;
+            txtLog.SelectionLength = 0;
+        }
+
+        private void btnUp_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            if (listBox1.SelectedIndex == 0) return;
+            var channel = listBox1.SelectedItem as ChannelMapChannel;
+
+            var nextIndex = listBox1.SelectedIndex - 1;
+
+            var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
+            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
+            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo--;
+            channel.Setup.ChannelNumber = nextItemNo;
+
+            Log(channel.Setup._niceChannelName + " -> " + nextItemNo);
+
+            ReBindList(listBox1.SelectedIndex, channel);
+
+            SortByNo();
+        }
+
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            if (listBox1.SelectedIndex == listBox1.Items.Count - 1) return;
+            var channel = listBox1.SelectedItem as ChannelMapChannel;
+
+            var nextIndex = listBox1.SelectedIndex + 1;
+
+            var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
+            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
+            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo++;
+            channel.Setup.ChannelNumber = nextItemNo;
+
+            Log(channel.Setup._niceChannelName + " -> " + nextItemNo);
+
+            ReBindList(listBox1.SelectedIndex, channel);
+
+            SortByNo();
         }
     }
 }
