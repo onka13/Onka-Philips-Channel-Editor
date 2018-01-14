@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -16,16 +19,26 @@ namespace OnkaPhilipsChannelEditor
     public partial class FormMain : Form
     {
         ChannelMap root;
+        string _lang = "en";
+        ResourceManager resourceManager;
 
         public FormMain()
         {
             InitializeComponent();
         }
 
+        public FormMain(string lang)
+        {
+            this._lang = lang;
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+            InitializeComponent();            
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             listBox1.AllowDrop = true;
             splitContainer1.Enabled = false;
+            resourceManager = new ResourceManager(typeof(FormMain));
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -54,7 +67,9 @@ namespace OnkaPhilipsChannelEditor
             splitContainer1.Enabled = true;
             cStatus.Text = openFileDialog.FileName;
 
-            Log("Opened from " + openFileDialog.FileName);
+            
+
+            Log(resourceManager.GetString("form_open_file")  + " => " + openFileDialog.FileName);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,14 +96,14 @@ namespace OnkaPhilipsChannelEditor
             if (channel.Setup.ChannelNumber != newNo)
             {
                 var otherChannel = root.Channel.FirstOrDefault(x => x.Setup.ChannelNumber == newNo);
-                if(otherChannel != null)
+                if (otherChannel != null)
                 {
-                    Log(otherChannel.Setup._niceChannelName + " " + otherChannel.Setup.ChannelNumber + " changed to " + channel.Setup.ChannelNumber);
+                    Log(otherChannel.Setup._niceChannelName + " " + otherChannel.Setup.ChannelNumber + " => " + channel.Setup.ChannelNumber);
 
                     otherChannel.Setup.ChannelNumber = channel.Setup.ChannelNumber;
-                }                
+                }
             }
-            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " changed to " + newNo);
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " => " + newNo);
 
             channel.Setup.ChannelNumber = newNo;
             channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
@@ -102,6 +117,7 @@ namespace OnkaPhilipsChannelEditor
         private void sortByNoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SortByNo();
+            Log(resourceManager.GetString("sortByNoToolStripMenuItem.Text"));
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -134,7 +150,7 @@ namespace OnkaPhilipsChannelEditor
                 }
                 File.WriteAllText(dialog.FileName, output);
             }
-            Log("Saved to " + dialog.FileName);
+            Log(resourceManager.GetString("form_save_file") + " => " + dialog.FileName);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -152,7 +168,7 @@ namespace OnkaPhilipsChannelEditor
             }
             ReBindList(index);
 
-            Log("Order All - Re Number");
+            Log(resourceManager.GetString("orderAllReNumberToolStripMenuItem.Text"));
         }
 
         private void listBox1_MouseDown(object sender, MouseEventArgs e)
@@ -229,7 +245,7 @@ namespace OnkaPhilipsChannelEditor
                         }
                     }
                 }
-                Log("Order by saved file list " + openFileDialog.FileName);
+                Log(resourceManager.GetString("orderBySavedFileListToolStripMenuItem.Text") + " => " + openFileDialog.FileName);
             }
             catch (Exception ex)
             {
@@ -254,14 +270,13 @@ namespace OnkaPhilipsChannelEditor
 
             ReBindList(index - 1);
 
-            Log(name + " deleted");
+            Log(name + " " + resourceManager.GetString("form_deleted"));
         }
 
         void SortByNo()
         {
             root.Channel = root.Channel.OrderBy(x => x.Setup.ChannelNumber).ToArray();
-            ReBindList(listBox1.SelectedIndex, listBox1.SelectedItem);
-            Log("Sorted by no");
+            ReBindList(listBox1.SelectedIndex, listBox1.SelectedItem);            
         }
 
         void ReBindList(int index = 0, object item = null)
@@ -294,7 +309,7 @@ namespace OnkaPhilipsChannelEditor
 
             root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
             if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo--;
-            channel.Setup.ChannelNumber = nextItemNo;            
+            channel.Setup.ChannelNumber = nextItemNo;
 
             ReBindList(listBox1.SelectedIndex, channel);
 
@@ -319,6 +334,20 @@ namespace OnkaPhilipsChannelEditor
             ReBindList(listBox1.SelectedIndex, channel);
 
             SortByNo();
+        }
+
+        private void cLanguage_DropDownClosed(object sender, EventArgs e)
+        {
+            var lang = new[] { "en", "tr-TR" }[cLanguage.SelectedIndex];
+            if (_lang == lang) return;
+
+            Thread t = new Thread(new ThreadStart(() =>
+            {
+                Application.Run(new FormMain(lang));                
+            }));
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            this.Close();
         }
     }
 }
