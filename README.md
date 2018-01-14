@@ -48,21 +48,22 @@ Buradaki DVBS ve DVBSall dosyaları sizin program ile açıp düzelteceğiniz do
   - syslogo.tar
 
 ### 1.0 İlk Versiyon
-* Philips PUS6262 ile test edildi
+* Philips PUS6262 ve PFS4022 ile test edildi
 * İndir [İlk Versiyon] (https://github.com/onka13/Onka-Philips-Channel-Editor/raw/master/Program.zip)
 
 ### Kullanımı
-1. Öncelikle menüden File->Open kısmından 
+1. Öncelikle menüden Dosya->Aç kısmından 
     - DVBSall.xml dosyasını açınız
     - Dosyanın yedeğini almayı unutmayın
 1. Soldaki listede kanallar listelenecektir. Herhangi bir kanal seçin.
-1. Kanal sırasını yazıp 'Change' düğmesi ile değiştirin
-1. Listeden kanala basılı tutup aşağı yukarı sürükleyerek de sıralayabilirsiniz.
-1. Aynı numaradan oluşan kanallardan kurtulmak için, Tools->'Order All-Re Number' menüsünü kullanabilirsiniz.
-1. En sonunda File->Save diyerek kaydediniz.
+1. Kanal sırasını yazıp 'Değiştir' düğmesi ile değiştirin
+1. Liste yanındaki ok tuşları ile de sıralayabilirsiniz.
+1. Baştan sıralamak için, Araçlar->'Hepsini Baştan Numaralandır' menüsünü kullanabilirsiniz.
+1. En sonunda Dosya->Kaydet diyerek kaydediniz.
 
 ### Önemli UYARI
 * TV'nizin ayarlarında kanal listesi sıralanmamış seçili olması gerekiyor. 
 
 ### Geliştiriciden Not
 * İnternette olan diğer programlar çalışmayınca kendim yapayım dedim ve basit hızlı hemen işimi görecek bir program yazdım. Çok zaman ayıramadım hatalar olacaktır muhtemelen. Amacım ufakta olsa birileri faydalansın. Sizde çalışmazsa hata vs olursa, lütfen yeni konu açıp dosyaları iletin. Yardım etmeye çalışırım.
+* Uygulamayı ciddi anlamda birçok kez test edip, daha kullanışlı olmasını sağlayan Ahmet Bey'e teşekkür ediyorum. 
