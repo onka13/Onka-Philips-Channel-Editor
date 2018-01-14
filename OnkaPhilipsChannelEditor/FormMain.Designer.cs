@@ -54,9 +54,11 @@
             this.sortByNoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderAllReNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderBySavedFileListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cLanguageEnglish = new System.Windows.Forms.ToolStripMenuItem();
+            this.cLanguageTurkish = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cLanguage = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.cStatus = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -78,15 +80,16 @@
             // 
             // splitContainer1.Panel1
             // 
+            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.btnDown);
             this.splitContainer1.Panel1.Controls.Add(this.btnUp);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
             this.splitContainer1.Panel1.Controls.Add(this.txtSearch);
             this.splitContainer1.Panel1.Controls.Add(this.listBox1);
-            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             // 
             // splitContainer1.Panel2
             // 
+            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             // 
             // btnDown
@@ -131,6 +134,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.cAutoSort);
             this.splitContainer2.Panel1.Controls.Add(this.btnChange);
             this.splitContainer2.Panel1.Controls.Add(this.btnDeleteChannel);
@@ -143,6 +147,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.txtLog);
             // 
             // cAutoSort
@@ -202,102 +207,112 @@
             // 
             // menuStrip1
             // 
+            resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
+            this.languageToolStripMenuItem,
             this.helpToolStripMenuItem});
-            resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             resources.ApplyResources(this.openToolStripMenuItem, "openToolStripMenuItem");
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             resources.ApplyResources(this.saveToolStripMenuItem, "saveToolStripMenuItem");
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
+            resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sortByNoToolStripMenuItem,
             this.orderAllReNumberToolStripMenuItem,
             this.orderBySavedFileListToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
             // sortByNoToolStripMenuItem
             // 
-            this.sortByNoToolStripMenuItem.Name = "sortByNoToolStripMenuItem";
             resources.ApplyResources(this.sortByNoToolStripMenuItem, "sortByNoToolStripMenuItem");
+            this.sortByNoToolStripMenuItem.Name = "sortByNoToolStripMenuItem";
             this.sortByNoToolStripMenuItem.Click += new System.EventHandler(this.sortByNoToolStripMenuItem_Click);
             // 
             // orderAllReNumberToolStripMenuItem
             // 
-            this.orderAllReNumberToolStripMenuItem.Name = "orderAllReNumberToolStripMenuItem";
             resources.ApplyResources(this.orderAllReNumberToolStripMenuItem, "orderAllReNumberToolStripMenuItem");
+            this.orderAllReNumberToolStripMenuItem.Name = "orderAllReNumberToolStripMenuItem";
             this.orderAllReNumberToolStripMenuItem.Click += new System.EventHandler(this.orderAllReNumberToolStripMenuItem_Click);
             // 
             // orderBySavedFileListToolStripMenuItem
             // 
-            this.orderBySavedFileListToolStripMenuItem.Name = "orderBySavedFileListToolStripMenuItem";
             resources.ApplyResources(this.orderBySavedFileListToolStripMenuItem, "orderBySavedFileListToolStripMenuItem");
+            this.orderBySavedFileListToolStripMenuItem.Name = "orderBySavedFileListToolStripMenuItem";
             this.orderBySavedFileListToolStripMenuItem.Click += new System.EventHandler(this.orderBySavedFileListToolStripMenuItem_Click);
+            // 
+            // languageToolStripMenuItem
+            // 
+            resources.ApplyResources(this.languageToolStripMenuItem, "languageToolStripMenuItem");
+            this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cLanguageEnglish,
+            this.cLanguageTurkish});
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            // 
+            // cLanguageEnglish
+            // 
+            resources.ApplyResources(this.cLanguageEnglish, "cLanguageEnglish");
+            this.cLanguageEnglish.Name = "cLanguageEnglish";
+            this.cLanguageEnglish.Click += new System.EventHandler(this.cLanguageEnglish_Click);
+            // 
+            // cLanguageTurkish
+            // 
+            resources.ApplyResources(this.cLanguageTurkish, "cLanguageTurkish");
+            this.cLanguageTurkish.Name = "cLanguageTurkish";
+            this.cLanguageTurkish.Click += new System.EventHandler(this.cLanguageTurkish_Click);
             // 
             // helpToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.cLanguage});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // cLanguage
-            // 
-            this.cLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cLanguage.Items.AddRange(new object[] {
-            resources.GetString("cLanguage.Items"),
-            resources.GetString("cLanguage.Items1")});
-            this.cLanguage.Name = "cLanguage";
-            resources.ApplyResources(this.cLanguage, "cLanguage");
-            this.cLanguage.DropDownClosed += new System.EventHandler(this.cLanguage_DropDownClosed);
             // 
             // statusStrip1
             // 
+            resources.ApplyResources(this.statusStrip1, "statusStrip1");
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cStatus});
-            resources.ApplyResources(this.statusStrip1, "statusStrip1");
             this.statusStrip1.Name = "statusStrip1";
             // 
             // cStatus
             // 
-            this.cStatus.Name = "cStatus";
             resources.ApplyResources(this.cStatus, "cStatus");
+            this.cStatus.Name = "cStatus";
             // 
             // FormMain
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
@@ -353,7 +368,9 @@
         private System.Windows.Forms.CheckBox cAutoSort;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.ToolStripComboBox cLanguage;
+        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cLanguageEnglish;
+        private System.Windows.Forms.ToolStripMenuItem cLanguageTurkish;
     }
 }
 

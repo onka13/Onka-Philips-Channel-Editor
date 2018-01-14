@@ -31,7 +31,7 @@ namespace OnkaPhilipsChannelEditor
         {
             this._lang = lang;
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,6 +39,9 @@ namespace OnkaPhilipsChannelEditor
             listBox1.AllowDrop = true;
             splitContainer1.Enabled = false;
             resourceManager = new ResourceManager(typeof(FormMain));
+
+            if (_lang == "tr-TR") cLanguageTurkish.Checked = true;
+            else cLanguageEnglish.Checked = true;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -67,9 +70,9 @@ namespace OnkaPhilipsChannelEditor
             splitContainer1.Enabled = true;
             cStatus.Text = openFileDialog.FileName;
 
-            
 
-            Log(resourceManager.GetString("form_open_file")  + " => " + openFileDialog.FileName);
+
+            Log(resourceManager.GetString("form_open_file") + " => " + openFileDialog.FileName);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -103,7 +106,7 @@ namespace OnkaPhilipsChannelEditor
                     otherChannel.Setup.ChannelNumber = channel.Setup.ChannelNumber;
                 }
             }
-            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " => " + newNo);
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " => " + newNo + ", " + txtName.Text);
 
             channel.Setup.ChannelNumber = newNo;
             channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
@@ -276,7 +279,7 @@ namespace OnkaPhilipsChannelEditor
         void SortByNo()
         {
             root.Channel = root.Channel.OrderBy(x => x.Setup.ChannelNumber).ToArray();
-            ReBindList(listBox1.SelectedIndex, listBox1.SelectedItem);            
+            ReBindList(listBox1.SelectedIndex, listBox1.SelectedItem);
         }
 
         void ReBindList(int index = 0, object item = null)
@@ -329,21 +332,28 @@ namespace OnkaPhilipsChannelEditor
             if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo++;
             channel.Setup.ChannelNumber = nextItemNo;
 
-            Log(channel.Setup._niceChannelName + " -> " + nextItemNo);
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
 
             ReBindList(listBox1.SelectedIndex, channel);
 
             SortByNo();
         }
 
-        private void cLanguage_DropDownClosed(object sender, EventArgs e)
+        private void cLanguageEnglish_Click(object sender, EventArgs e)
         {
-            var lang = new[] { "en", "tr-TR" }[cLanguage.SelectedIndex];
-            if (_lang == lang) return;
+            ChangeLang("en");
+        }
 
+        private void cLanguageTurkish_Click(object sender, EventArgs e)
+        {
+            ChangeLang("tr-TR");
+        }
+        void ChangeLang(string lang)
+        {
+            if (_lang == lang) return;
             Thread t = new Thread(new ThreadStart(() =>
             {
-                Application.Run(new FormMain(lang));                
+                Application.Run(new FormMain(lang));
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
