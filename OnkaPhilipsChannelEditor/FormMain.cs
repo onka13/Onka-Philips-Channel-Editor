@@ -77,9 +77,20 @@ namespace OnkaPhilipsChannelEditor
             if (listBox1.SelectedIndex == -1) return;
             var channel = listBox1.SelectedItem as ChannelMapChannel;
 
-            Log(channel.Setup._niceChannelName + " changed");
+            var newNo = Convert.ToUInt16(txtNo.Text);
+            if (channel.Setup.ChannelNumber != newNo)
+            {
+                var otherChannel = root.Channel.FirstOrDefault(x => x.Setup.ChannelNumber == newNo);
+                if(otherChannel != null)
+                {
+                    Log(otherChannel.Setup._niceChannelName + " " + otherChannel.Setup.ChannelNumber + " changed to " + channel.Setup.ChannelNumber);
 
-            channel.Setup.ChannelNumber = Convert.ToUInt16(txtNo.Text);
+                    otherChannel.Setup.ChannelNumber = channel.Setup.ChannelNumber;
+                }                
+            }
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " changed to " + newNo);
+
+            channel.Setup.ChannelNumber = newNo;
             channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
             channel.Setup.ChannelName = OnkaHelper.SetChannelName(txtName.Text);
 
@@ -133,21 +144,22 @@ namespace OnkaPhilipsChannelEditor
 
         private void orderAllReNumberToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var index = listBox1.SelectedIndex;
             root.Channel = root.Channel.OrderBy(x => x.Setup.ChannelNumber).ToArray();
             for (int i = 0; i < root.Channel.Length; i++)
             {
                 root.Channel[i].Setup.ChannelNumber = Convert.ToUInt16(i + 1);
             }
-            ReBindList();
+            ReBindList(index);
 
             Log("Order All - Re Number");
         }
 
         private void listBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            listBox1_SelectedIndexChanged(null, null);
+            /*listBox1_SelectedIndexChanged(null, null);
             if (listBox1.SelectedItem == null) return;
-            listBox1.DoDragDrop(listBox1.SelectedItem, DragDropEffects.Move);
+            listBox1.DoDragDrop(listBox1.SelectedItem, DragDropEffects.Move);*/
         }
 
         private void listBox1_DragOver(object sender, DragEventArgs e)
@@ -277,11 +289,12 @@ namespace OnkaPhilipsChannelEditor
             var nextIndex = listBox1.SelectedIndex - 1;
 
             var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
+
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
+
             root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
             if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo--;
-            channel.Setup.ChannelNumber = nextItemNo;
-
-            Log(channel.Setup._niceChannelName + " -> " + nextItemNo);
+            channel.Setup.ChannelNumber = nextItemNo;            
 
             ReBindList(listBox1.SelectedIndex, channel);
 
