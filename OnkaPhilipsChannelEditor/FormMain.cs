@@ -359,5 +359,51 @@ namespace OnkaPhilipsChannelEditor
             t.Start();
             this.Close();
         }
+
+        private void btn10Up_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            if (listBox1.SelectedIndex == 0) return;
+            var channel = listBox1.SelectedItem as ChannelMapChannel;
+
+            var nextIndex = Math.Max(listBox1.SelectedIndex - 10, 0);
+
+            var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
+
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
+
+            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
+            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo--;
+            channel.Setup.ChannelNumber = nextItemNo;
+
+            ReBindList(listBox1.SelectedIndex, channel);
+
+            SortByNo();
+        }
+
+        private void btn10Down_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            if (listBox1.SelectedIndex == listBox1.Items.Count - 1) return;
+            var channel = listBox1.SelectedItem as ChannelMapChannel;
+
+            var nextIndex = Math.Min(listBox1.SelectedIndex + 10, listBox1.Items.Count - 1);
+
+            var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
+            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
+            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo++;
+            channel.Setup.ChannelNumber = nextItemNo;
+
+            Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
+
+            ReBindList(listBox1.SelectedIndex, channel);
+
+            SortByNo();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
