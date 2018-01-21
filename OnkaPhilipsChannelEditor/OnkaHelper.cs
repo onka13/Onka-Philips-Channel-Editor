@@ -24,7 +24,8 @@ namespace OnkaPhilipsChannelEditor
         public static string SetChannelName(string name)
         {
             if (name == null) name = "";
-            name = name.Substring(0, 24);
+            if (name.Length > 24)
+                name = name.Substring(0, 24);
             byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(name);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
 
