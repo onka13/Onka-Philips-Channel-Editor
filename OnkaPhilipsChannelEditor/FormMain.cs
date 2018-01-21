@@ -87,7 +87,9 @@ namespace OnkaPhilipsChannelEditor
             var channel = listBox1.SelectedItem as ChannelMapChannel;
             txtNo.Text = channel.Setup.ChannelNumber.ToString();
             txtFavoriteNo.Text = channel.Setup.FavoriteNumber.ToString();
-            txtName.Text = OnkaHelper.GetChannelName(channel.Setup.ChannelName);
+            var cName = OnkaHelper.GetChannelName(channel.Setup.ChannelName);
+            txtName.Text = cName.Name;
+            lblChannelSuffix.Text = cName.Suffix;
         }
 
         private void btnChange_Click(object sender, EventArgs e)
@@ -110,7 +112,9 @@ namespace OnkaPhilipsChannelEditor
 
             channel.Setup.ChannelNumber = newNo;
             channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
-            channel.Setup.ChannelName = OnkaHelper.SetChannelName(txtName.Text);
+            var cName = OnkaHelper.GetChannelName(channel.Setup.ChannelName);
+            cName.Name = txtName.Text;
+            channel.Setup.ChannelName = OnkaHelper.SetChannelName(cName);
 
             ReBindList(listBox1.SelectedIndex, channel);
 
@@ -125,12 +129,26 @@ namespace OnkaPhilipsChannelEditor
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (root == null || root.Channel == null || root.Channel.Length == 0) return;
+
             SaveFileDialog dialog = new SaveFileDialog();
             if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
-            var serializer = new XmlSerializer(typeof(ChannelMap));
+
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
+
+            var channel = root.Channel.FirstOrDefault();
+            if (channel.Setup._niceChannelName.SuffixLength == 0)
+            {
+                XmlAttributes attribs = new XmlAttributes();
+                attribs.XmlIgnore = true;
+                attribs.XmlElements.Add(new XmlElementAttribute("UniqueID"));
+                overrides.Add(typeof(ChannelMapChannelBroadcast), "UniqueID", attribs);
+            }
+
+            var serializer = new XmlSerializer(typeof(ChannelMap), overrides);
 
             XmlWriterSettings settings = new XmlWriterSettings
             {
@@ -158,7 +176,7 @@ namespace OnkaPhilipsChannelEditor
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            listBox1.DataSource = root.Channel.Where(x => x.Setup._niceChannelName.Contains(txtSearch.Text)).ToList();
+            listBox1.DataSource = root.Channel.Where(x => x.Setup._niceChannelName.Name.Contains(txtSearch.Text)).ToList();
         }
 
         private void orderAllReNumberToolStripMenuItem_Click(object sender, EventArgs e)

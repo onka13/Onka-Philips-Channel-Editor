@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace OnkaPhilipsChannelEditor
 {
+    public class OnkaChannelName
+    {
+        public string Name { get; set; }
+        public string Suffix { get; set; }
+        public int NameLength { get; set; }
+        public int SuffixLength { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
 /*
     public class ChannelMapModel
     {
@@ -182,12 +194,15 @@ namespace OnkaPhilipsChannelEditor
             set
             {
                 this.channelNameField = value;
-                _niceChannelName = OnkaHelper.GetChannelName(channelNameField).ToLowerInvariant();
+                _niceChannelName = OnkaHelper.GetChannelName(channelNameField);
             }
         }
         [System.Xml.Serialization.XmlIgnore]
-        public string _niceChannelName = "";
-        
+        public OnkaChannelName _niceChannelName = new OnkaChannelName();
+
+        [System.Xml.Serialization.XmlIgnore]
+        public string _ChannelNameSuffix = "";
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public byte ChannelLock
@@ -293,6 +308,7 @@ namespace OnkaPhilipsChannelEditor
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ChannelMapChannelBroadcast
     {
+        private int uniqueIDField;
 
         private byte channelTypeField;
 
@@ -315,6 +331,20 @@ namespace OnkaPhilipsChannelEditor
         private byte polarizationField;
 
         private byte systemHiddenField;
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int UniqueID
+        {
+            get
+            {
+                return this.uniqueIDField;
+            }
+            set
+            {
+                this.uniqueIDField = value;
+            }
+        }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]

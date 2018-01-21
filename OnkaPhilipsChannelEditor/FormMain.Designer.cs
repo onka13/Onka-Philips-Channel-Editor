@@ -63,6 +63,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.cStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblChannelSuffix = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -151,6 +152,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.lblChannelSuffix);
             this.splitContainer2.Panel1.Controls.Add(this.cAutoSort);
             this.splitContainer2.Panel1.Controls.Add(this.btnChange);
             this.splitContainer2.Panel1.Controls.Add(this.btnDeleteChannel);
@@ -324,6 +326,11 @@
             this.cStatus.Name = "cStatus";
             resources.ApplyResources(this.cStatus, "cStatus");
             // 
+            // lblChannelSuffix
+            // 
+            resources.ApplyResources(this.lblChannelSuffix, "lblChannelSuffix");
+            this.lblChannelSuffix.Name = "lblChannelSuffix";
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -388,6 +395,7 @@
         private System.Windows.Forms.ToolStripMenuItem cLanguageTurkish;
         private System.Windows.Forms.Button btn10Down;
         private System.Windows.Forms.Button btn10Up;
+        private System.Windows.Forms.Label lblChannelSuffix;
     }
 }
 
