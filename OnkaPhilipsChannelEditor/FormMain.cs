@@ -383,18 +383,23 @@ namespace OnkaPhilipsChannelEditor
             if (listBox1.SelectedIndex == -1) return;
             if (listBox1.SelectedIndex == 0) return;
             var channel = listBox1.SelectedItem as ChannelMapChannel;
+            var channelNo = channel.Setup.ChannelNumber;
 
             var nextIndex = Math.Max(listBox1.SelectedIndex - 10, 0);
 
             var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
 
             Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
-
-            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
-            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo--;
             channel.Setup.ChannelNumber = nextItemNo;
 
-            ReBindList(listBox1.SelectedIndex, channel);
+            for (int i = listBox1.SelectedIndex - 1; i >= nextIndex; i--)
+            {
+                var no = root.Channel[i].Setup.ChannelNumber;
+                root.Channel[i].Setup.ChannelNumber = channelNo;
+                channelNo = no;
+            }
+
+            ReBindList(nextIndex, channel);
 
             SortByNo();
         }
@@ -404,17 +409,23 @@ namespace OnkaPhilipsChannelEditor
             if (listBox1.SelectedIndex == -1) return;
             if (listBox1.SelectedIndex == listBox1.Items.Count - 1) return;
             var channel = listBox1.SelectedItem as ChannelMapChannel;
+            var channelNo = channel.Setup.ChannelNumber;
 
             var nextIndex = Math.Min(listBox1.SelectedIndex + 10, listBox1.Items.Count - 1);
 
             var nextItemNo = root.Channel[nextIndex].Setup.ChannelNumber;
-            root.Channel[nextIndex].Setup.ChannelNumber = channel.Setup.ChannelNumber;
-            if (channel.Setup.ChannelNumber == nextItemNo) nextItemNo++;
-            channel.Setup.ChannelNumber = nextItemNo;
 
             Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " -> " + nextItemNo);
+            channel.Setup.ChannelNumber = nextItemNo;
 
-            ReBindList(listBox1.SelectedIndex, channel);
+            for (int i = listBox1.SelectedIndex + 1; i <= nextIndex; i++)
+            {
+                var no = root.Channel[i].Setup.ChannelNumber;
+                root.Channel[i].Setup.ChannelNumber = channelNo;
+                channelNo = no;
+            }
+
+            ReBindList(nextIndex, channel);
 
             SortByNo();
         }
