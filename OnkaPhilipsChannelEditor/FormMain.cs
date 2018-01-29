@@ -176,7 +176,7 @@ namespace OnkaPhilipsChannelEditor
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            listBox1.DataSource = root.Channel.Where(x => x.Setup._niceChannelName.Name.Contains(txtSearch.Text)).ToList();
+            listBox1.DataSource = root.Channel.Where(x => x.Setup._niceChannelName.Name.ToLowerInvariant().Contains(txtSearch.Text.ToLowerInvariant())).ToList();
         }
 
         private void orderAllReNumberToolStripMenuItem_Click(object sender, EventArgs e)

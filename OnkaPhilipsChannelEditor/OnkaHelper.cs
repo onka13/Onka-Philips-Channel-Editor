@@ -67,7 +67,7 @@ namespace OnkaPhilipsChannelEditor
         public static string SetChannelName(string name, int length)
         {
             if (name == null) name = "";
-            
+
             byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(name);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
 
@@ -78,12 +78,24 @@ namespace OnkaPhilipsChannelEditor
                     stringBuilder.Append(" ");
 
                 var ui = (uint)name[i];
-                stringBuilder.Append("0x" + ui.ToString("X") + " 0x00");                
+                stringBuilder.Append("0x" + ui.ToString("X") + " 0x00");
             }
-            var to = (length - stringBuilder.ToString().Length) / 5;
-            for (int i = 0; i < to; i++)
+            var remain = length - stringBuilder.ToString().Length;
+            if (remain == 1)
             {
-                stringBuilder.Append(" 0x00");
+                stringBuilder.Append(" ");
+            }
+            else if (remain < 5)
+            {
+                // ?
+            }
+            else
+            {
+                var to = (remain) / 5;
+                for (int i = 0; i < to; i++)
+                {
+                    stringBuilder.Append(" 0x00");
+                }
             }
             return stringBuilder.ToString();
         }
