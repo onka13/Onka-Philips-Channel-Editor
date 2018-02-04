@@ -137,23 +137,25 @@ namespace OnkaPhilipsChannelEditor
 
         private string satelliteNameField;
 
-        private ushort channelNumberField;
+        private int channelNumberField;
 
         private string channelNameField;
 
-        private byte channelLockField;
+        private int channelLockField;
 
-        private byte userModifiedNameField;
+        private int userModifiedNameField;
 
-        private ushort logoIDField;
+        private int logoIDField;
 
-        private byte userModifiedLogoField;
+        private int userModifiedLogoField;
 
-        private byte logoLockField;
+        private int logoLockField;
 
-        private byte userHiddenField;
+        private int userHiddenField;
 
-        private byte favoriteNumberField;
+        private int favoriteNumberField;
+
+        private int scrambleField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -171,7 +173,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort ChannelNumber
+        public int ChannelNumber
         {
             get
             {
@@ -205,7 +207,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte ChannelLock
+        public int ChannelLock
         {
             get
             {
@@ -219,7 +221,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte UserModifiedName
+        public int UserModifiedName
         {
             get
             {
@@ -233,7 +235,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort LogoID
+        public int LogoID
         {
             get
             {
@@ -247,7 +249,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte UserModifiedLogo
+        public int UserModifiedLogo
         {
             get
             {
@@ -261,7 +263,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte LogoLock
+        public int LogoLock
         {
             get
             {
@@ -275,7 +277,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte UserHidden
+        public int UserHidden
         {
             get
             {
@@ -289,7 +291,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte FavoriteNumber
+        public int FavoriteNumber
         {
             get
             {
@@ -298,6 +300,19 @@ namespace OnkaPhilipsChannelEditor
             set
             {
                 this.favoriteNumberField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Scramble
+        {
+            get
+            {
+                return this.scrambleField;
+            }
+            set
+            {
+                this.scrambleField = value;
             }
         }
     }
@@ -310,27 +325,37 @@ namespace OnkaPhilipsChannelEditor
     {
         private int uniqueIDField;
 
-        private byte channelTypeField;
+        private int channelTypeField;
 
-        private ushort onidField;
+        private int onidField;
 
-        private ushort tsidField;
+        private int tsidField;
 
-        private ushort sidField;
+        private int sidField;
 
-        private ushort frequencyField;
+        private int frequencyField;
 
         private string modulationField;
 
-        private byte serviceTypeField;
+        private int serviceTypeField;
 
-        private ushort symbolRateField;
+        private int symbolRateField;
 
-        private byte lNBNumberField;
+        private int lNBNumberField;
 
-        private byte polarizationField;
+        private int polarizationField;
 
-        private byte systemHiddenField;
+        private int systemHiddenField;
+
+        private int bandwidthField;
+
+        private int decoderTypeField;
+
+        private int subTypeField;
+
+        private int networkIDField;
+
+        private int streamPriorityField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -348,7 +373,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte ChannelType
+        public int ChannelType
         {
             get
             {
@@ -362,7 +387,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort Onid
+        public int Onid
         {
             get
             {
@@ -376,7 +401,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort Tsid
+        public int Tsid
         {
             get
             {
@@ -390,7 +415,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort Sid
+        public int Sid
         {
             get
             {
@@ -404,7 +429,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort Frequency
+        public int Frequency
         {
             get
             {
@@ -432,7 +457,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte ServiceType
+        public int ServiceType
         {
             get
             {
@@ -446,7 +471,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort SymbolRate
+        public int SymbolRate
         {
             get
             {
@@ -460,7 +485,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte LNBNumber
+        public int LNBNumber
         {
             get
             {
@@ -474,7 +499,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte Polarization
+        public int Polarization
         {
             get
             {
@@ -488,7 +513,7 @@ namespace OnkaPhilipsChannelEditor
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte SystemHidden
+        public int SystemHidden
         {
             get
             {
@@ -497,6 +522,71 @@ namespace OnkaPhilipsChannelEditor
             set
             {
                 this.systemHiddenField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Bandwidth
+        {
+            get
+            {
+                return this.bandwidthField;
+            }
+            set
+            {
+                this.bandwidthField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int DecoderType
+        {
+            get
+            {
+                return this.decoderTypeField;
+            }
+            set
+            {
+                this.decoderTypeField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int SubType
+        {
+            get
+            {
+                return this.subTypeField;
+            }
+            set
+            {
+                this.subTypeField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int NetworkID
+        {
+            get
+            {
+                return this.networkIDField;
+            }
+            set
+            {
+                this.networkIDField = value;
+            }
+        }
+
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int StreamPriority
+        {
+            get
+            {
+                return this.streamPriorityField;
+            }
+            set
+            {
+                this.streamPriorityField = value;
             }
         }
     }

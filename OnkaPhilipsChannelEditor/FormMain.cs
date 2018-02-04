@@ -18,6 +18,7 @@ namespace OnkaPhilipsChannelEditor
 {
     public partial class FormMain : Form
     {
+        string originalXmlData = "";
         ChannelMap root;
         string _lang = "en";
         ResourceManager resourceManager;
@@ -51,16 +52,28 @@ namespace OnkaPhilipsChannelEditor
             {
                 return;
             }
-            string data = File.ReadAllText(openFileDialog.FileName);
+            originalXmlData = File.ReadAllText(openFileDialog.FileName);
 
             var serializer = new XmlSerializer(typeof(ChannelMap));
+            serializer.UnknownAttribute += (sender2, e2) =>
+            {
+                var a = e2.Attr;
+            };
+            serializer.UnreferencedObject += (sender2, e2) =>
+            {
+                var a = e2.UnreferencedObject;
+            };
+            serializer.UnknownElement += (sender2, e2) =>
+            {
+                var a = e2.Element;
+            };
 
             XmlReaderSettings settings = new XmlReaderSettings
             {
                 CheckCharacters = false,
             };
 
-            using (var stream = new StringReader(data))
+            using (var stream = new StringReader(originalXmlData))
             using (var reader = XmlReader.Create(stream, settings))
             {
                 root = (ChannelMap)serializer.Deserialize(reader);
@@ -111,7 +124,7 @@ namespace OnkaPhilipsChannelEditor
             Log(channel.Setup._niceChannelName + " " + channel.Setup.ChannelNumber + " => " + newNo + ", " + txtName.Text);
 
             channel.Setup.ChannelNumber = newNo;
-            channel.Setup.FavoriteNumber = Convert.ToByte(txtFavoriteNo.Text);
+            channel.Setup.FavoriteNumber = Convert.ToInt32(txtFavoriteNo.Text);
             var cName = OnkaHelper.GetChannelName(channel.Setup.ChannelName);
             cName.Name = txtName.Text;
             channel.Setup.ChannelName = OnkaHelper.SetChannelName(cName);
@@ -137,18 +150,7 @@ namespace OnkaPhilipsChannelEditor
                 return;
             }
 
-            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
-
-            var channel = root.Channel.FirstOrDefault();
-            if (channel.Setup._niceChannelName.SuffixLength == 0)
-            {
-                XmlAttributes attribs = new XmlAttributes();
-                attribs.XmlIgnore = true;
-                attribs.XmlElements.Add(new XmlElementAttribute("UniqueID"));
-                overrides.Add(typeof(ChannelMapChannelBroadcast), "UniqueID", attribs);
-            }
-
-            var serializer = new XmlSerializer(typeof(ChannelMap), overrides);
+            var serializer = new XmlSerializer(typeof(ChannelMap), GetXmlAttributeOverrides());
 
             XmlWriterSettings settings = new XmlWriterSettings
             {
@@ -226,7 +228,7 @@ namespace OnkaPhilipsChannelEditor
             {
                 if (i < 254)
                 {
-                    root.Channel[i].Setup.FavoriteNumber = Convert.ToByte(i + 1);
+                    root.Channel[i].Setup.FavoriteNumber = Convert.ToInt32(i + 1);
                 }
                 else
                 {
@@ -433,6 +435,39 @@ namespace OnkaPhilipsChannelEditor
         private void button2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        XmlAttributeOverrides GetXmlAttributeOverrides()
+        {
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
+
+            // ChannelMapChannelSetup
+            var setupList = new List<string> { "SatelliteName", "Scramble" };
+            foreach (var setupProp in setupList)
+            {
+                if (!originalXmlData.Contains(setupProp + "="))
+                {
+                    XmlAttributes attribs = new XmlAttributes();
+                    attribs.XmlIgnore = true;
+                    attribs.XmlElements.Add(new XmlElementAttribute(setupProp));
+                    overrides.Add(typeof(ChannelMapChannelSetup), setupProp, attribs);
+                }
+            }
+
+            // ChannelMapChannelBroadcast
+            var broadcastList = new List<string> { "Bandwidth", "DecoderType", "SubType", "NetworkID", "StreamPriority", "UniqueID", "LNBNumber", "Polarization" };
+            foreach (var broadProp in broadcastList)
+            {
+                if (!originalXmlData.Contains(broadProp + "="))
+                {
+                    XmlAttributes attribs = new XmlAttributes();
+                    attribs.XmlIgnore = true;
+                    attribs.XmlElements.Add(new XmlElementAttribute(broadProp));
+                    overrides.Add(typeof(ChannelMapChannelBroadcast), broadProp, attribs);
+                }
+            }
+
+            return overrides;
         }
     }
 }
