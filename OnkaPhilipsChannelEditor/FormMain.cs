@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -260,15 +260,22 @@ namespace OnkaPhilipsChannelEditor
                     {
                         for (int j = 0; j < root.Channel.Length; j++)
                         {
-                            if (root.Channel[j].Setup._niceChannelName == otherFile.Channel[i].Setup._niceChannelName)
+                            try
                             {
-                                root.Channel[j].Setup.ChannelNumber = otherFile.Channel[i].Setup.ChannelNumber;
-                                break;
+                                if (root.Channel[j].Setup._niceChannelName.Name == otherFile.Channel[i].Setup._niceChannelName.Name)
+                                {
+                                    root.Channel[j].Setup.ChannelNumber = otherFile.Channel[i].Setup.ChannelNumber;
+                                    break;
+                                }
+                            }
+                            catch (Exception)
+                            {
                             }
                         }
                     }
-                }
+                }                
                 Log(resourceManager.GetString("orderBySavedFileListToolStripMenuItem.Text") + " => " + openFileDialog.FileName);
+                orderAllReNumberToolStripMenuItem_Click(null, null);
             }
             catch (Exception ex)
             {
